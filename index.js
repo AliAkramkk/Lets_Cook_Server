@@ -19,7 +19,7 @@ const { Socket } = require('dgram');
 // const http = require('http');
 const app = express();
 
-app.use(cors({ credentials: true, origin: 'https://lets-cook-client.vercel.app/' }));
+app.use(cors({ credentials: true, origin: 'https://lets-cook-client.vercel.app' }));
 
 app.use(cookieParser());
 app.use(credentials);
