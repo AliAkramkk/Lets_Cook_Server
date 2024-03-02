@@ -74,7 +74,7 @@ const uploadVideo = async (videoFile) => {
       max_file_size: 100000000,
     });
 
-    fs.unlinkSync(compressedVideoPath);
+    // fs.unlinkSync(compressedVideoPath);
 
     let video = {
       url: result.url,
