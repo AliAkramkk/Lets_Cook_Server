@@ -9,7 +9,7 @@ const payment_schema = require('../models/paymentSchema')
 // const course_schema = require("..");
 
 
-const ffmpegPath = 'C:\\ffmpeg\\bin\\ffmpeg.exe'; // Update with the correct path
+// const ffmpegPath = 'C:\\ffmpeg\\bin\\ffmpeg.exe'; // Update with the correct path
 
 cloudinary.config({
   cloud_name: "dix9tfwiz",
@@ -44,18 +44,18 @@ const uploadimage = async (onefile) => {
 };
 const uploadVideo = async (videoFile) => {
   try {
-    console.log("Video File:", videoFile);
-    const outputDirectory = "./compressed_videos";
-    const compressedVideoPath = `${outputDirectory}/${Date.now()}_compressed.mp4`;
+    // console.log("Video File:", videoFile);
+    // const outputDirectory = "./compressed_videos";
+    // const compressedVideoPath = `${outputDirectory}/${Date.now()}_compressed.mp4`;
 
-    if (!fs.existsSync(outputDirectory)) {
-      fs.mkdirSync(outputDirectory, { recursive: true });
-    }
+    // if (!fs.existsSync(outputDirectory)) {
+    //   fs.mkdirSync(outputDirectory, { recursive: true });
+    // }
 
-    const ffmpegCommand = `"${ffmpegPath}" -i "${videoFile.tempFilePath}" -c:v libx265 -preset medium -crf 32 -c:a aac -strict -2 "${compressedVideoPath}"`;
-    await execPromise(ffmpegCommand);
+    // const ffmpegCommand = `"${ffmpegPath}" -i "${videoFile.tempFilePath}" -c:v libx265 -preset medium -crf 32 -c:a aac -strict -2 "${compressedVideoPath}"`;
+    // await execPromise(ffmpegCommand);
 
-    const result = await cloudinary.uploader.upload(compressedVideoPath, {
+    const result = await cloudinary.uploader.upload(videoFile.tempFilePath, {
       resource_type: "video",
       public_id: `${Date.now()}`,
       folder: "Let'sCook",
