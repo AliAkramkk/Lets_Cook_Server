@@ -8,7 +8,7 @@ const { uploadimage } = require('../controller/publicController')
 
 const addBlog = async (req, res, next) => {
   try {
-    console.log("add a blog please");
+
     const userEmail = req.user;
     const user = await userModel.findOne({ email: userEmail })
 
@@ -36,7 +36,7 @@ const addBlog = async (req, res, next) => {
       });
 
       await newBlog.save();
-      console.log("new blog", newBlog);
+
       res.status(200).json({ message: "blog created" });
     } catch (error) {
       next(error);
@@ -79,7 +79,7 @@ const changeBlogImage = async (req, res, next) => {
 
     const coverImage = await uploadimage(image);
     await blogModel.findByIdAndUpdate(blogId, { coverImage });
-    console.log("suces");
+
     res.status(200).json({ message: "image Changed" });
   } catch (error) {
     next(error);
@@ -105,7 +105,7 @@ const deleteBlog = async (req, res, next) => {
 
 const getAllBlogs = async (req, res, next) => {
   try {
-    // console.log("hooiii getblog");
+
     const ITEMS_PER_PAGE = 3;
     let page = +req.query.page || 1;
     let search = "";
@@ -153,7 +153,7 @@ const getAllBlogs = async (req, res, next) => {
 
 const getBlog = async (req, res, next) => {
   try {
-    console.log('hii from getblog');
+
     const userEmail = req.user;
     // console.log("user id", userId);
     const blogId = req.params.id;
@@ -293,25 +293,6 @@ const handleReport = async (req, res, next) => {
 
     res.status(200).json({ message: "Blog Reported" });
 
-    // const updatedBlog = await blogModel.findByIdAndUpdate(
-    //   blogId,
-    //   { $push: { reports: user } },
-    //   { new: true }
-    // );
-
-    // const reportsCount = updatedBlog.reports.length;
-    // // const reportsCount = 12
-    // const LikesCount = updatedBlog.likes.length;
-
-    // if (
-    //   reportsCount > Math.floor(LikesCount / 2) &&
-    //   reportsCount > minimumReports
-    // ) {
-    //   updatedBlog.isAccess = false;
-    //   await updatedBlog.save();
-    // }
-
-    // res.status(200).json({ message: "Blog Reported" });
   } catch (error) {
     next(error);
   }
@@ -319,7 +300,7 @@ const handleReport = async (req, res, next) => {
 
 const handleComment = async (req, res, next) => {
   try {
-    console.log("hii from comment");
+
     const userEmail = req.user;
     const user = await userModel.findOne({ email: userEmail })
     const { blogId, comment } = req.body;
