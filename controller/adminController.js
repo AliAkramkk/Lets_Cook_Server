@@ -100,7 +100,7 @@ const changeCategoryImage = async (req, res) => {
 }
 const editCategoryName = async (req, res) => {
   try {
-    console.log("hiii");
+
     const { id } = req.params;
     const { name } = req.body;
     console.log("edit category", name);
@@ -224,7 +224,7 @@ const updatePayment = async (req, res) => {
 
 const getDashboardData = async (req, res) => {
   try {
-    console.log("hiii");
+
     const studentsData = await user_schema.find({ role: 2000 });
     const teachersData = await user_schema.find({ role: 3000 });
     const allCourses = await course.find({ isShow: true });
@@ -340,7 +340,7 @@ const getPayments = async (req, res, next) => {
 };
 
 const handleTeacherPay = async (req, res, next) => {
-  console.log("hii from handleTeacherPay");
+
   try {
     const { paymentId } = req.body;
     const existPayment = await payment_schema.findById(paymentId);
