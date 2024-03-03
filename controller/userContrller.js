@@ -10,17 +10,14 @@ const jwt = require('jsonwebtoken')
 const getStudent = async (req, res) => {
   try {
     const id = req.params.id
-
     const student = await User.findOne({ _id: id });
-
-
     res.status(201).json({ student })
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ errors: true, error: 'Internal Server Error' });
   }
 }
-
+// ...........user profile section.............
 const editProfile = async (req, res) => {
   try {
     const { email, pic, username, phone } = req.body;
@@ -35,12 +32,12 @@ const editProfile = async (req, res) => {
         { email: email },
         {
           $set: {
-            pic: data.url || undefined, // Assuming 'url' is the property where Cloudinary stores the image URL
+            pic: data.url || undefined,
             username: data.username || undefined,
             phone: data.phone || undefined,
           },
         },
-        { new: true } // Return the updated document
+        { new: true }
       );
     } else {
       updatedUser = await User.findOneAndUpdate(
@@ -51,7 +48,7 @@ const editProfile = async (req, res) => {
             phone,
           },
         },
-        { new: true } // Return the updated document
+        { new: true }
       );
     }
 
@@ -65,7 +62,7 @@ const editProfile = async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
-// .............................User......................................... // 
+// .............User payment handle section............ // 
 
 const paymentHandle = async (req, res) => {
   try {
@@ -89,8 +86,8 @@ const paymentHandle = async (req, res) => {
         },
       ],
       mode: "payment",
-      success_url: `http://localhost:3000/successpayment?session_id={CHECKOUT_SESSION_ID}&course_id=${courseData._id}&user_name=${user.user}`,
-      cancel_url: "http://localhost:5173/coursedetails",
+      success_url: `https://letscook.aliakram.shop/successpayment?session_id={CHECKOUT_SESSION_ID}&course_id=${courseData._id}&user_name=${user.user}`,
+      cancel_url: "hhttps://lets-cook-client.vercel.app/coursedetails",
     });
     res.status(200).json({ id: session.id });
 
@@ -120,7 +117,7 @@ const handleSuccessPayment = async (req, res) => {
     });
 
     await payment.save();
-    res.redirect(`http://localhost:5173/user/my-learning`);
+    res.redirect(`https://lets-cook-client.vercel.app/user/my-learning`);
 
   } catch (error) {
     console.log(error.message);

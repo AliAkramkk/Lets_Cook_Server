@@ -6,13 +6,11 @@ const category_schema = require('../models/categorySchema');
 const payment_schema = require('../models/paymentSchema')
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-// const { ObjectId } = require('mongoose').Types;
-// const public_controller = require('../controller/publicController')
 
+// ......student data.............
 const getStudent = async (req, res) => {
   try {
     const id = req.params.id
-    // console.log("chef id", id);
     const student = await user_schema.findOne({ _id: id });
 
     res.status(201).json({ student })
@@ -22,7 +20,7 @@ const getStudent = async (req, res) => {
   }
 }
 
-// ................addCourse section....................................
+// ................addCourse section..................
 const addCourse = async (req, res) => {
   try {
     const { title, category, description, price, aboutChef, blurb, user } = req.body;
@@ -47,7 +45,6 @@ const addCourse = async (req, res) => {
 
     // Save the new course
     const savedCourse = await newCourse.save();
-    // console.log("Add course", savedCourse);
     res.status(201).json({ message: "Course uploaded successfully!" });
   } catch (error) {
     console.error(error);
@@ -55,27 +52,20 @@ const addCourse = async (req, res) => {
   }
 };
 
-// // ...............edit course......................................
+//..............edit course......................
 const editCourse = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, category, description, price, aboutChef, blurb, user } = req.body;
-
     const updatedCourseData = req.body;
-
     if (req.files && req.files.coverImage) {
       const uploadImageResult = await public_controller.uploadimage(req.files.coverImage);
       updatedCourseData.coverImage = uploadImageResult;
-      // console.log("image", uploadImageResult);
     }
-    // Check if new demoVideo is provided
     if (req.files && req.files.demoVideo) {
       const uploadVideoResult = await public_controller.uploadVideo(req.files.demoVideo);
       updatedCourseData.demoVideo = uploadVideoResult;
     }
-
-    // console.log("Updated Course Data:", updatedCourseData);
-
     const updatedCourse = await course_schema.findByIdAndUpdate(
       id,
       updatedCourseData,
@@ -93,7 +83,7 @@ const editCourse = async (req, res) => {
   }
 };
 
-// ...........................get Categories.................................
+// ...................get Categories..................
 const getCategories = async (req, res) => {
   try {
     console.log("hii from add course");
@@ -156,7 +146,6 @@ const handleChangeCourse = async (req, res) => {
     const { id } = req.body;
     console.log("id" + id);
     const course = await course_schema.findOne({ _id: id })
-    // console.log("coure", course);
     await course_schema.updateOne(
       { _id: course._id },
       { $set: { isShow: !course.isShow } }
@@ -170,14 +159,7 @@ const handleChangeCourse = async (req, res) => {
 
 const deleteCourse = async (req, res) => {
   try {
-    console.log("hiii");
     const id = req.params.id;
-    // const paymentRecord = await payment_schema.findOne({ course_id: id });
-    // console.log("paymentRecord", paymentRecord);
-    // if (paymentRecord) {
-    //   // If there are payment records, the course has been purchased
-    //   return res.status(400).json({ message: "Cannot delete purchased course." });
-    // }
     const result = await course_schema.deleteOne({ _id: id });
     if (result.deletedCount === 1) {
       res.status(200).json({ message: "Course deleted succefully" })
@@ -303,14 +285,9 @@ const checkPayment = async (req, res) => {
 
 
 const sendLiveStreamLink = async (req, res) => {
-  console.log("hiiii");
   const { liveStreamLink } = req.body;
-  console.log("link", liveStreamLink);
-
   try {
     const students = await payment_schema.find().populate("user_id");
-
-    console.log("students", students);
 
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -338,7 +315,7 @@ const sendLiveStreamLink = async (req, res) => {
       };
 
       const data = await transporter.sendMail(mailOptions);
-      console.log(`Email has been sent to ${student.user_id.username} (${student.user_id.email})`, data.response);
+
     }
 
     res.status(200).json({ message: 'Emails sent successfully.' });
@@ -351,7 +328,6 @@ const sendLiveStreamLink = async (req, res) => {
 const chefData = async (req, res) => {
   try {
     const userId = req.query.id;
-    // Convert userId to ObjectId
     const userIdObjectId = new ObjectId(userId);
     const totalUnlistedCourses = await course_schema.countDocuments({
       chef: userIdObjectId,
@@ -360,7 +336,7 @@ const chefData = async (req, res) => {
     // Retrieve chef details
     const chef = await user_schema.findOne({ _id: userIdObjectId });
 
-    // Count the number of courses the chef has
+    //..... Count the number of courses the chef has....
     const coursesCount = await payment_schema.countDocuments({ chef_id: userIdObjectId });
 
 
@@ -397,8 +373,6 @@ const getGraphData = async (req, res) => {
     console.log("hiii");
     const { chefId } = req.params;
     const chefIdObjectId = new ObjectId(chefId);
-    console.log("chef", chefId);
-    // const chefId = new mongoose.Types.ObjectId(req.userId);
     const paymentData = await payment_schema.aggregate([
       {
         $match: {
@@ -424,16 +398,13 @@ const getGraphData = async (req, res) => {
         },
       },
     ]);
-
-    console.log("paymentData", paymentData);
-
     res.status(200).json({ paymentData });
   } catch (error) {
     next(error);
   }
 };
 
-
+// .............chef payment section............
 const getPayments = async (req, res) => {
   try {
     const ITEMS_PER_PAGE = 4;
