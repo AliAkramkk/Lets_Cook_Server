@@ -87,7 +87,7 @@ const paymentHandle = async (req, res) => {
       ],
       mode: "payment",
       success_url: `https://letscook.aliakram.shop/successpayment?session_id={CHECKOUT_SESSION_ID}&course_id=${courseData._id}&user_name=${user.user}`,
-      cancel_url: "hhttps://lets-cook-client.vercel.app/coursedetails",
+      cancel_url: "https://lets-cook-client.vercel.app/coursedetails",
     });
     res.status(200).json({ id: session.id });
 
