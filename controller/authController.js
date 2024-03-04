@@ -35,7 +35,7 @@ const signUp_post = async (req, res) => {
         role: isChef ? 3000 : 2000,
       });
       await newUser.save();
-      res.cookie("id", newUser._id, { maxAge: 500000, httpOnly: true, sameSite: 'None' });
+      res.cookie("id", newUser._id, { maxAge: 500000, httpOnly: true, sameSite: 'none', secure: true });
       public_controller.sendemailotp(email, otp);
       res.status(201).json({ message: "enter your otp" });
     }
@@ -246,12 +246,14 @@ const userVerifyOTP = async (req, res) => {
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
         maxAge: 48 * 60 * 60 * 1000,
-        sameSite: 'None'
+        sameSite: 'none',
+        secure: true
       });
 
       return res.status(201).json({
         message: "success",
         accessToken,
+
         role: user.role,
         user: user.username,
         id: user._id
