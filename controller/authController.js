@@ -35,7 +35,7 @@ const signUp_post = async (req, res) => {
         role: isChef ? 3000 : 2000,
       });
       await newUser.save();
-      res.cookie("id", newUser._id, { maxAge: 500000, httpOnly: true });
+      res.cookie("id", newUser._id, { maxAge: 500000, httpOnly: true, sameSite: 'None' });
       public_controller.sendemailotp(email, otp);
       res.status(201).json({ message: "enter your otp" });
     }
@@ -213,7 +213,7 @@ const userVerifyOTP = async (req, res) => {
     const id = req.cookies.id;
 
 
-    // console.log(id)
+    console.log(id)
     let user = await User.findOne({ _id: id });
     console.log(user);
     const secret = user.OTP;
@@ -271,7 +271,7 @@ const resendOTP = async (req, res) => {
     const id = req.cookies.id;
 
 
-    // console.log(id)
+    console.log(id)
     let user = await User.findOne({ _id: id });
     if (user) {
       const { otp, secret } = await public_controller.genarateOTP();
