@@ -83,6 +83,7 @@ const signIn_post = async (req, res) => {
             res.cookie("jwt", refreshToken, {
               httpOnly: true,
               maxAge: 48 * 60 * 60 * 1000,
+              sameSite: 'None'
             });
 
             return res.status(201).json({
@@ -157,6 +158,7 @@ const signIn_google = async (req, res) => {
       res.cookie("jwt", refreshtoken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
+
       });
       res.status(200).json({
         role: newUserData.role,
@@ -191,6 +193,7 @@ const signIn_google = async (req, res) => {
     res.cookie("jwt", refreshtoken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
+
     });
     res.status(200).json({
       role: existedUser.role,
@@ -243,6 +246,7 @@ const userVerifyOTP = async (req, res) => {
       res.cookie("jwt", refreshToken, {
         httpOnly: true,
         maxAge: 48 * 60 * 60 * 1000,
+        sameSite: 'None'
       });
 
       return res.status(201).json({
