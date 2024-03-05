@@ -410,37 +410,39 @@ const getPayments = async (req, res) => {
     const ITEMS_PER_PAGE = 4;
     let page = +req.query.page || 1;
     const chefId = req.user;
-    if (chefId) {
-      const AllPayments = await payment_schema
-        .find({ isDivided: true })
-        .populate("course_id")
-        .populate("user_id", "-password");
+    // if (chefId) {
+    const chef = await payment_schema.findOne({ chef_id: chefId.id });
+    console.log("chef", chef);
+    const AllPayments = await payment_schema
+      .find({ isDivided: true })
+      .populate("course_id")
+      .populate("user_id", "-password");
 
-      const startIndex = (page - 1) * ITEMS_PER_PAGE;
-      const lastIndex = page * ITEMS_PER_PAGE;
+    const startIndex = (page - 1) * ITEMS_PER_PAGE;
+    const lastIndex = page * ITEMS_PER_PAGE;
 
-      const results = {};
-      results.totalPayments = AllPayments.length;
-      results.pageCount = Math.ceil(AllPayments.length / ITEMS_PER_PAGE);
+    const results = {};
+    results.totalPayments = AllPayments.length;
+    results.pageCount = Math.ceil(AllPayments.length / ITEMS_PER_PAGE);
 
-      if (lastIndex < AllPayments.length) {
-        results.next = {
-          page: page + 1,
-        };
-      }
-
-      if (startIndex > 0) {
-        results.prev = {
-          page: page - 1,
-        };
-      }
-
-      results.page = page - 1;
-      results.payments = AllPayments.slice(startIndex, lastIndex);
-
-      res.status(200).json({ results });
+    if (lastIndex < AllPayments.length) {
+      results.next = {
+        page: page + 1,
+      };
     }
-    res.status(400).json({ message: "No Course listed yet" })
+
+    if (startIndex > 0) {
+      results.prev = {
+        page: page - 1,
+      };
+    }
+
+    results.page = page - 1;
+    results.payments = AllPayments.slice(startIndex, lastIndex);
+
+    res.status(200).json({ results });
+    // }
+    // res.status(400).json({ message: "No Course listed yet" })
   } catch (error) {
     next(error);
   }
