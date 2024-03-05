@@ -449,7 +449,9 @@ const getPayments = async (req, res, next) => {
     const ITEMS_PER_PAGE = 4;
     let page = +req.query.page || 1;
 
-    const chefId = req.user;  // Assuming you have user information attached to the request
+    const chefId = req.user;
+    console.log("Request Object:", req);
+    // Assuming you have user information attached to the request
     console.log("chef ", chefId);
     const AllPayments = await payment_schema
       .find({ isDivided: true, chef_id: chefId, course_id: { $ne: null } })
