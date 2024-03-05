@@ -450,7 +450,7 @@ const getPayments = async (req, res, next) => {
     let page = +req.query.page || 1;
 
     const chefId = req.user.id;  // Assuming you have user information attached to the request
-    console.log("chef ");
+    console.log("chef ", chefId);
     const AllPayments = await payment_schema
       .find({ isDivided: true, chef_id: chefId, course_id: { $ne: null } }) // Exclude payments with no course_id
       .populate("course_id")
