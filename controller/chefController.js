@@ -405,13 +405,53 @@ const getGraphData = async (req, res) => {
 };
 
 // .............chef payment section............
-const getPayments = async (req, res) => {
+// const getPayments = async (req, res) => {
+//   try {
+//     const ITEMS_PER_PAGE = 4;
+//     let page = +req.query.page || 1;
+
+//     const AllPayments = await payment_schema
+//       .find({ isDivided: true })
+//       .populate("course_id")
+//       .populate("user_id", "-password");
+
+//     const startIndex = (page - 1) * ITEMS_PER_PAGE;
+//     const lastIndex = page * ITEMS_PER_PAGE;
+
+//     const results = {};
+//     results.totalPayments = AllPayments.length;
+//     results.pageCount = Math.ceil(AllPayments.length / ITEMS_PER_PAGE);
+
+//     if (lastIndex < AllPayments.length) {
+//       results.next = {
+//         page: page + 1,
+//       };
+//     }
+
+//     if (startIndex > 0) {
+//       results.prev = {
+//         page: page - 1,
+//       };
+//     }
+
+//     results.page = page - 1;
+//     results.payments = AllPayments.slice(startIndex, lastIndex);
+
+//     res.status(200).json({ results });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+const getPayments = async (req, res, next) => {
   try {
     const ITEMS_PER_PAGE = 4;
     let page = +req.query.page || 1;
 
+    const chefId = req.user.id;  // Assuming you have user information attached to the request
+
     const AllPayments = await payment_schema
-      .find({ isDivided: true })
+      .find({ isDivided: true, chef_id: chefId, course_id: { $ne: null } }) // Exclude payments with no course_id
       .populate("course_id")
       .populate("user_id", "-password");
 
@@ -442,6 +482,7 @@ const getPayments = async (req, res) => {
     next(error);
   }
 };
+
 
 module.exports = {
   getStudent,
