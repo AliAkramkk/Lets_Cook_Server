@@ -413,7 +413,7 @@ const getPayments = async (req, res) => {
 
     const chef = await payment_schema.findOne({ chef_id: chefId.id });
     console.log("chef", chef);
-    if (chefId) {
+    if (chef) {
       const AllPayments = await payment_schema
         .find({ isDivided: true })
         .populate("course_id")
