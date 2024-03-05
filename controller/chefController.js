@@ -445,16 +445,17 @@ const getGraphData = async (req, res) => {
 
 const getPayments = async (req, res, next) => {
   try {
+    console.log("hii from get peyments");
     const ITEMS_PER_PAGE = 4;
     let page = +req.query.page || 1;
 
     const chefId = req.user.id;  // Assuming you have user information attached to the request
-
+    console.log("chef ");
     const AllPayments = await payment_schema
       .find({ isDivided: true, chef_id: chefId, course_id: { $ne: null } }) // Exclude payments with no course_id
       .populate("course_id")
       .populate("user_id", "-password");
-
+    console.log(AllPayments);
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
     const lastIndex = page * ITEMS_PER_PAGE;
 
