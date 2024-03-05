@@ -15,7 +15,7 @@ const verifyJWT = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    // console.log("Decoded Token jwt:", decoded);
+    console.log("Decoded Token jwt:", decoded);
     req.user = decoded.email; // Assuming email is stored in the JWT payload
 
     // Additional verification if needed
