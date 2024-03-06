@@ -411,7 +411,7 @@ const getPayments = async (req, res, next) => {
     let page = +req.query.page || 1;
     const chefId = req.query.chefId;
     console.log("id of chef", chefId);
-    const chef = await payment_schema.findOne({ chef_id: chefId.id });
+    const chef = await payment_schema.findOne({ chef_id: chefId });
     console.log("chef", chef);
 
     if (!chef) {
