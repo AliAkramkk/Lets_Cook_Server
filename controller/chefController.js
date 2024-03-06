@@ -410,7 +410,7 @@ const getPayments = async (req, res, next) => {
     const ITEMS_PER_PAGE = 4;
     let page = +req.query.page || 1;
     const chefId = req.user;
-
+    console.log("id of chef", chefId);
     const chef = await payment_schema.findOne({ chef_id: chefId.id });
     console.log("chef", chef);
 
