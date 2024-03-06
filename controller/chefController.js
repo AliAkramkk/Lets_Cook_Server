@@ -415,7 +415,7 @@ const getPayments = async (req, res, next) => {
     console.log("chef", chef);
 
     if (!chef) {
-      return res.status(404).json({ message: "No chef found" });
+      return res.status(404).json({ message: "You didn't listed a course yet" });
     }
 
     const AllPayments = await payment_schema
